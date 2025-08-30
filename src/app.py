@@ -17,6 +17,7 @@ from sqlalchemy.orm import load_only
 from functools import wraps
 
 
+
 # from src.api.models import db
 from flask import Flask, render_template
 # importaciones adicionales para credenciales
@@ -32,13 +33,13 @@ from werkzeug.security import generate_password_hash
 from flask_cors import CORS
 import cloudinary.uploader
 from dotenv import load_dotenv
-
+import os
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 
-load_dotenv()
+load_dotenv() # carga las variables del .env
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 bcrypt = Bcrypt(app)  # para encriptar
