@@ -96,7 +96,7 @@ const Login = () => {
     <div className="login-background-wrapper px-3 py-5 d-flex align-items-center justify-content-center flex-grow-1">
       <form onSubmit={handleLogin} className="login-card w-100 mx-auto">
         <h3 className="welcome-text-login text-center mb-1">Welcome to</h3>
-        <h4 className="restaurant-text-login text-center mb-1">Hayashi Sushi Bar 🍣🌸</h4>
+        <h4 className="restaurant-text-login text-center mb-1">Chiringui-Bar</h4>
         <p className="login-text-tittle text-start mb-2">Log in</p>
 
         <div className="mb-2">
