@@ -20,7 +20,7 @@ const Admin = () => {
 
       if (!res.ok) {
         console.error("Respuesta con error:", data);
-        throw new Error("Error en la petición de órdenes");
+        throw new Error("Order errors in the petition");
       }
 
       if (data.orders && Array.isArray(data.orders)) {
@@ -60,7 +60,7 @@ const Admin = () => {
         >
           <h3 className="text-center mb-2 text-light">Welcome to</h3>
           <h4 className="text-center mb-2" style={{ color: "#e4a2b0" }}>
-            Hayashi Sushi Bar 🍣
+            Chiringui-Bar 🍣
           </h4>
           <p className="text-start mb-2" style={{ color: "white" }}>
             Admin View

@@ -27,7 +27,7 @@ export const Footer = () => (
 			}}
 		>
 			
-			<a className="text-decoration-none text-muted mx-2" href="https://github.com/HeidyDB">Heidy Diaz</a>
+			<a className="text-decoration-none text-muted mx-2" href="https://github.com/HeidyDB">Heidy Diaz Barrios</a>
 			
 		</div>
 	</footer>
