@@ -30,7 +30,7 @@ export const Navbar = () => {
   const handleClose = () => {
     Swal.fire({
       title: "¡See you soon!",
-      text: "Thank you for using the Hayashi Sushi Bar app 😊🍜",
+      text: "Thank you for using Chiringui-Bar app 😊🍜",
       icon: "info",
       confirmButtonText: "Close",
       confirmButtonColor: "#e4a2b0",
@@ -48,7 +48,7 @@ export const Navbar = () => {
     >
       <div className="container">
         <Link className="navbar-brand text-white fs-4" to="/">
-          <i className="fas fa-store"></i> Hayashi Sushi Bar 🍣🌸
+          <i className="fas fa-store"></i> Chiringui-Bar 🍣
         </Link>
 
         <button
@@ -112,7 +112,7 @@ export const Navbar = () => {
                     onClick={() => {
                       Swal.fire({
                         title: "¡See you soon!",
-                        text: "Thank you for using the Hayashi Sushi Bar app 😊🍜",
+                        text: "Thank you for using Chiringui-Bar app 😊🍜",
                         icon: "info",
                         confirmButtonText: "Close",
                         confirmButtonColor: "#e4a2b0",
