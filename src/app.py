@@ -26,6 +26,8 @@ from flask_bcrypt import Bcrypt  # para encriptar las contraseñas
 from flask_mail import Mail, Message  # para enviar correos para reset password
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.security import generate_password_hash
+#para pago online
+from paypal_utils import create_paypal_order, capture_paypal_order
 
 
 # from flask_bcrypt import Bcrypt
