@@ -26,6 +26,7 @@ from flask_bcrypt import Bcrypt  # para encriptar las contraseñas
 from flask_mail import Mail, Message  # para enviar correos para reset password
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.security import generate_password_hash
+
 #para pago online
 from paypal_utils import create_paypal_order, capture_paypal_order
 
@@ -889,10 +890,32 @@ def upload():
         return jsonify({"error": str(e)}), 500
 
 
+
+
+
+#_________________PAYPAL PAY ONLINE__________________________________
+# Crear orden de pago
+@app.route("/create-paypal-order", methods=["POST"])
+def create_order():
+    data = request.json
+    total = data.get("total")
+
+    order = create_paypal_order(total)
+    return jsonify(order)
+
+
+# Capturar pago
+@app.route("/capture-paypal-order/<order_id>", methods=["POST"])
+def capture_order(order_id):
+    capture_result = capture_paypal_order(order_id)
+    return jsonify(capture_result)
+
+
+
+
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
-
 
 # pipenv install flask flask-mail bcrypt
 # pipenv install itsdangerous
