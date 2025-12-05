@@ -16,8 +16,6 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import load_only
 from functools import wraps
 
-
-
 # from src.api.models import db
 from flask import Flask, render_template
 # importaciones adicionales para credenciales
@@ -27,27 +25,28 @@ from flask_mail import Mail, Message  # para enviar correos para reset password
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.security import generate_password_hash
 
-#para pago online
+#para pago online. 
 from paypal_utils import create_paypal_order, capture_paypal_order
-
 
 # from flask_bcrypt import Bcrypt
 
 from flask_cors import CORS
 import cloudinary.uploader
-from dotenv import load_dotenv
+from dotenv import load_dotenv #para variables de entrono 
 import os
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../dist/')
 
-load_dotenv() # carga las variables del .env
-app = Flask(__name__)
-app.url_map.strict_slashes = False
-bcrypt = Bcrypt(app)  # para encriptar
+load_dotenv() # carga las variables del .env PRIMERO 
 
-CORS(app)
+app = Flask(__name__)
+
+app.url_map.strict_slashes = False
+#bcrypt = Bcrypt(app)  # para encriptar
+
+#CORS(app)
 
 
  # origins=["https://scaling-funicular-5g6r47pqpwv3vjqg-3000.app.github.dev"],
@@ -57,11 +56,26 @@ CORS(app)
 
 
 app.url_map.strict_slashes = False
-# para tener la llave fuera del codigo
-app.config["JWT_SECRET_KEY"] = os.getenv('JWT_KEY')  # la llave esta en .env
-serializer = URLSafeTimedSerializer(os.getenv('JWT_KEY'))
 
+# para tener la llave fuera del codigo
+#app.config["JWT_SECRET_KEY"] = os.getenv('JWT_KEY')  # la llave esta en .env
+#serializer = URLSafeTimedSerializer(os.getenv('JWT_KEY'))
+#app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or "dev-secret-key"
+
+# Para JWT. SE CONFIGURAN LAS LLAVES PRIMERO     --------
+jwt_key = os.getenv("JWT_KEY") or "dev-jwt-key"
+app.config["JWT_SECRET_KEY"] = jwt_key
+serializer = URLSafeTimedSerializer(jwt_key)
+
+# Para Flask en general
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "dev-secret-key"
+
+# SE INICIALIZAN LAS EXTENSIONES DESPUES DE LAS LLAVES -------
+bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+admin = Admin(app)
+
+CORS(app)
 
 # configuracion Cloudinary
 cloudinary.config(
@@ -910,7 +924,25 @@ def capture_order(order_id):
     capture_result = capture_paypal_order(order_id)
     return jsonify(capture_result)
 
+    #_________________
+    # Crear orden PayPal
+@app.route("/api/paypal/create-order", methods=["POST"])
+def create_order():
+    data = request.json  # aqui tomo la cantidad que viene de react 
+    amount = data.get("amount") # la  convierto en diccionario 
 
+    if not amount:
+        return jsonify({"error": "amount required"}), 400
+
+    order = create_paypal_order(amount) # este metodo se importa de paypal_utils.py
+    return jsonify(order)
+
+
+# Capturar pago
+@app.route("/api/paypal/capture-order/<order_id>", methods=["POST"])
+def capture_order(order_id):
+    capture = capture_paypal_order(order_id) # este metodo se importa de paypal_utils.py
+    return jsonify(capture)
 
 
 if __name__ == '__main__':

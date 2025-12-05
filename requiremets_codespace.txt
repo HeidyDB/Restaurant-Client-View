@@ -1,0 +1,10 @@
+flask
+flask-migrate
+flask-swagger
+tzdata
+pytz
+flask-cors
+cloudinary==1.44.1
+# Paquetes comentados porque fallan en Codespaces sin apt
+# psycopg2-binary
+# pyyaml
