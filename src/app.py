@@ -16,12 +16,15 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import load_only
 from functools import wraps
 
+
 # from src.api.models import db
 from flask import Flask, render_template
 # importaciones adicionales para credenciales
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, jwt_required, JWTManager
 from flask_bcrypt import Bcrypt  # para encriptar las contraseñas
 from flask_mail import Mail, Message  # para enviar correos para reset password
+from flask_admin import Admin
+from flask_cors import CORS
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
 from werkzeug.security import generate_password_hash
 
@@ -73,7 +76,8 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY") or "dev-secret-key"
 # SE INICIALIZAN LAS EXTENSIONES DESPUES DE LAS LLAVES -------
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-admin = Admin(app)
+#admin = Admin(app)
+#admin = Admin(app, name='4Geeks Admin')
 
 CORS(app)
 
@@ -907,26 +911,10 @@ def upload():
 
 
 
-#_________________PAYPAL PAY ONLINE__________________________________
-# Crear orden de pago
-@app.route("/create-paypal-order", methods=["POST"])
-def create_order():
-    data = request.json
-    total = data.get("total")
+#_________________PAYPAL PAY ONLINE_________________________________
 
-    order = create_paypal_order(total)
-    return jsonify(order)
-
-
-# Capturar pago
-@app.route("/capture-paypal-order/<order_id>", methods=["POST"])
-def capture_order(order_id):
-    capture_result = capture_paypal_order(order_id)
-    return jsonify(capture_result)
-
-    #_________________
-    # Crear orden PayPal
-@app.route("/api/paypal/create-order", methods=["POST"])
+# Crear orden PayPal
+@app.route("/api/paypal/create-order-paypal", methods=["POST"])
 def create_order():
     data = request.json  # aqui tomo la cantidad que viene de react 
     amount = data.get("amount") # la  convierto en diccionario 
